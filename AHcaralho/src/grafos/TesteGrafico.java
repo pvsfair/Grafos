@@ -133,9 +133,15 @@ public class TesteGrafico extends Display {
         // create sample graph
         // 9 nodes broken up into 3 interconnected cliques
         
-        Graph gr = Grafo.criaGrafo();     //Chamando função para ler o grafo pelo usuario
+        
+        
+        
+        Graph gr = Grafo.criaGrafo();                                             //Chamando função para ler o grafo pelo usuario
 
                
+        
+        
+        
         
         // add visual data groups
         VisualGraph vg = m_vis.addGraph(GRAPH, gr);

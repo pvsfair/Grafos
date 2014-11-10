@@ -37,10 +37,15 @@ public class Grafo {
         } while (grafo[0] <= 0 || grafo[1] < 0);
         int[][] matriz = MatrizAdj.geraMatriz(grafo[0]);
         //teste se tem ciclo
-        boolean retorno = alcancavel(0, 0, matriz);
-        System.out.println("Tem cilco? \n" + retorno);
-
-        //cria o desenho do grafo
+//        boolean retorno = alcancavel(0, 0, matriz);
+        
+        
+        OrdTop ordTop = new OrdTop();
+        ordTop.Ord(matriz);
+        
+        
+        
+ //cria o desenho do grafo
         for (int i = 0; i < matriz.length; i++) {
             Node a = gr.addNode();
         }

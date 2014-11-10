@@ -14,19 +14,18 @@ import java.util.Queue;
  */
 public class OrdTop {
 
-    private int[][] mat;
 
-    public void Ord() {
+    public void Ord(int[][] mat) {
         boolean existeIni = false;
         int j, x;
-        int[] vetgrau = new int[10];
+        int[] vetgrau = new int[mat.length];
         Queue<Integer> fila = new LinkedList<>();
-        if (!possuiCiclo()) {
-            preencheGrau(vetgrau);
-            for (int i = 0; i < 10; i++) {
+        if (!possuiCiclo(mat)) {
+            preencheGrau(vetgrau,mat);
+            for (int i = 0; i < mat.length; i++) {
                 if (vetgrau[i] == 0) {
                     j = 0;
-                    while ((j < 10) && (existeIni == false)) {
+                    while ((j < mat.length) && (existeIni == false)) {
                         if (mat[i][j] == 1) {
                             fila.add(i);
                             existeIni = true;
@@ -38,7 +37,7 @@ public class OrdTop {
             while (!fila.isEmpty()) {
                 x = fila.remove();
                 System.out.print(x);
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < mat.length; i++) {
                     if (mat[x][i] == 1) {
                         vetgrau[i]--;
                         if (vetgrau[i] == 0) {
@@ -56,20 +55,20 @@ public class OrdTop {
 
     }
 
-    public boolean possuiCiclo() {
+    public boolean possuiCiclo(int[][] mat) {
         boolean existeVertice = false;
         boolean possui = false;
         int i, j, k;
-        int[] vet = new int[10]; //onde tem 10 vai ser a variavel max
-        for (i = 0; i < 10; i++) {
+        int[] vet = new int[mat.length]; //onde tem mat.length vai ser a variavel max
+        for (i = 0; i < mat.length; i++) {
             j = 0;
             existeVertice = false;
-            while ((j < 10) && (existeVertice == false) && (possui == false)) {
+            while ((j < mat.length) && (existeVertice == false) && (possui == false)) {
                 if (mat[i][j] == 1) {
-                    for (k = 0; k < 10; k++) {
+                    for (k = 0; k < mat.length; k++) {
                         vet[k] = 0;
                     }
-                    possuiCicloDFS(i, vet, possui);
+                    possuiCicloDFS(i, vet, possui,mat);
                     existeVertice = true;
                 }
                 j++;
@@ -80,17 +79,17 @@ public class OrdTop {
 
     }
 
-    public void possuiCicloDFS(int ini, int[] vet, boolean possui) {
+    public void possuiCicloDFS(int ini, int[] vet, boolean possui,int[][] mat) {
         if (possui == false) {
-            if ((vet[0] + ini) == 1) {
+            if ((vet[0+ ini]) == 1) {   //criar variavel pra receber o indice inicial
                 possui = true;
             } else {
                 int soma = vet[0] + ini;
                 soma = 1;
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < mat.length; i++) {
                     if (mat[ini][i] == 1) {
                         if (((vet[0] + i) == 0) || ((vet[0] + i) == 1)) {
-                            possuiCicloDFS(i, vet, possui);
+                            possuiCicloDFS(i, vet, possui,mat);
                         }
                     }
                 }
@@ -99,12 +98,13 @@ public class OrdTop {
         }
     }
 
-    public void preencheGrau(int[] vet) {
-        for (int i = 0; i < 10; i++) {
+    public void preencheGrau(int[] vet,int[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
             vet[i] = 0;
+            
         }
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat.length; j++) {
                 if (mat[j][i] == 1) {
                     vet[0 + i] += 1;
                 }
