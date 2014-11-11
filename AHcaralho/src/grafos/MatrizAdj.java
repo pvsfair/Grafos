@@ -1,6 +1,7 @@
 package grafos;
 
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 
 
@@ -17,7 +18,7 @@ public class MatrizAdj {
                 } else if (matriz[j][i] != 0) {
                 } else {
                     System.out.println("Peso entre os vertices " + (i + 1) + "-" + (j + 1) + ":");
-                    matriz[i][j] = input.nextInt();
+                    matriz[i][j] = Integer.parseInt(JOptionPane.showInputDialog(null, "Peso entre os vertices " + (i + 1) + "-" + (j + 1) + ":"));
                     matriz[j][i] = matriz[i][j];
                 }
             }
