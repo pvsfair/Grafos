@@ -9,6 +9,7 @@ import grafos.GUI.LeituraGrafo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import prefuse.data.Edge;
 import prefuse.data.Graph;
 import prefuse.data.Node;
@@ -28,9 +29,9 @@ public class Grafo {
             System.out.println("Digite o grafo de entrada.");
             System.out.println("Representação- G=(N,M)");
             System.out.print("N - Vértices:");
-            grafo[0] = input.nextInt();
+            grafo[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Insira o número de Vértices:"));
             System.out.print("M- Arestas:");
-            grafo[1] = input.nextInt();
+            grafo[1] = Integer.parseInt(JOptionPane.showInputDialog(null, "Insira o número de Arestas:"));
             if (grafo[0] <= 0 || grafo[1] < 0) {
                 System.out.println("Valor inválido. Digite números maiores que zero.");
             }
