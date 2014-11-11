@@ -28,10 +28,12 @@ public class Grafo {
         do {
             System.out.println("Digite o grafo de entrada.");
             System.out.println("Representação- G=(N,M)");
+            JOptionPane.showMessageDialog(null, "Digite o grafo de entrada.\nRepresentação - G=(N,M)\n", "Instruções", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Atenção!.\nPara representar as arestas inexistentes no nosso\nprograma, identifique-as como tendo peso = 0.", "Instruções", JOptionPane.WARNING_MESSAGE);
             System.out.print("N - Vértices:");
-            grafo[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "Insira o número de Vértices:"));
+            grafo[0] = Integer.parseInt(JOptionPane.showInputDialog(null, "N - Vértices\nInsira o número de Vértices:"));
             System.out.print("M- Arestas:");
-            grafo[1] = Integer.parseInt(JOptionPane.showInputDialog(null, "Insira o número de Arestas:"));
+            grafo[1] = Integer.parseInt(JOptionPane.showInputDialog(null, "M- Arestas\nInsira o número de Arestas:"));
             if (grafo[0] <= 0 || grafo[1] < 0) {
                 System.out.println("Valor inválido. Digite números maiores que zero.");
             }
