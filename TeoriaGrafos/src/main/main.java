@@ -24,6 +24,8 @@ public class main {
         System.out.println(Grafo.checaConexo(grafo));
         if (Grafo.checaCilco(grafo)) {
             System.out.println("tem cilco");
+            Grafo retornaCilco = Grafo.retornaCilco(grafo);
+            imprimeMatriz(Grafo.geraMatriz(retornaCilco));
         } else {
             System.out.println("nao tem cilco");
         }

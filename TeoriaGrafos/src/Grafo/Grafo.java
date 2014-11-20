@@ -88,12 +88,6 @@ public class Grafo {
                 }
             }
         }
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                System.out.print("   " + matriz[i][j]);
-            }
-            System.out.println("\n");
-        }
         return matriz;
 
     }
@@ -128,54 +122,62 @@ public class Grafo {
         if (vOrigem.equals(vAtual)) {
             return true;
         }
+        boolean a = false;
         for (Aresta aresta : vAtual.getArestas()) {
             if (!aresta.getvDestino().equals(aPassada.getvOrigem())) {
-                return visitarVizinho(vOrigem, aresta.getvDestino(), aresta);
+                a = visitarVizinho(vOrigem, aresta.getvDestino(), aresta);
             }
         }
-        return false;
+        return a;
     }
 
-    private static Grafo retornaCilco(Vertice vOrigem, Vertice vAtual, Aresta aPassada, Grafo novo) {
-        
-
-
-
-        return null;
-
-
+    public static Grafo retornaCilco(Grafo gr) {
+        Grafo sailda = new Grafo();
+        for (Vertice vertice : gr.getVertices()) {
+            sailda = new Grafo();
+            sailda.vertices.add(vertice);
+            for (int i = 0; i < vertice.getArestas().size(); i++) {
+                sailda = achaCilco(vertice, vertice.getArestas().get(i).getvDestino(), vertice.getArestas().get(i), sailda);
+                if (sailda != null) {
+                    return sailda;
+                }
+            }
+        }
+        return sailda;
     }
-    
-     private static Grafo achaCilco(Vertice vOrigem, Vertice vAtual, Aresta aPassada,Grafo gNovo) {
+
+    private static Grafo achaCilco(Vertice vOrigem, Vertice vAtual, Aresta aPassada, Grafo gNovo) {
         System.out.println("vO = " + vOrigem.getRotulo() + " | vA = " + vAtual.getRotulo() + " | Aresta = " + aPassada.toString());
         if (vOrigem.equals(vAtual)) {
-             gNovo.buscaVertice(aPassada.getvOrigem().getRotulo()).addAresta(aPassada);
-             gNovo.buscaVertice(vAtual.getRotulo()).addAresta(aPassada);       
+            gNovo.buscaVertice(aPassada.getvOrigem().getRotulo()).addAresta(aPassada);
+            gNovo.buscaVertice(vAtual.getRotulo()).addAresta(aPassada.retornaInverso());
             return gNovo;
         }
+        Grafo g = null;
         for (Aresta aresta : vAtual.getArestas()) {
             if (!aresta.getvDestino().equals(aPassada.getvOrigem())) {
-               Vertice vNovo= new Vertice(vAtual.getRotulo());
-                vNovo.addAresta(aPassada.retornaInverso());
+                Vertice vNovo = new Vertice(vAtual.getRotulo());
+                vNovo.addAresta(aresta.retornaInverso());
                 gNovo.vertices.add(vNovo);
-                gNovo.buscaVertice(aPassada.getvOrigem().getRotulo()).addAresta(aPassada);
-                return achaCilco(vOrigem, aresta.getvDestino(), aresta,gNovo);
+                gNovo.buscaVertice(aPassada.getvOrigem().getRotulo()).addAresta(aresta);
+                g = achaCilco(vOrigem, aresta.getvDestino(), aresta, gNovo);
             }
-            
+
         }
-        return null;
+        return g;
     }
-     public Vertice buscaVertice(String rotulo){
-         for (Vertice vertice : vertices) {
-             if(vertice.getRotulo().equals(rotulo)){
-                 return vertice;
-             }
-         }
-         
-         return null;
-         
-     }
-     
+
+    public Vertice buscaVertice(String rotulo) {
+        for (Vertice vertice : this.getVertices()) {
+            if (vertice.getRotulo().equals(rotulo)) {
+                return vertice;
+            }
+        }
+
+        return null;
+
+    }
+
     public ArrayList<Vertice> getVertices() {
         return vertices;
     }
