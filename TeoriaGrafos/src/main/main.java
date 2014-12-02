@@ -19,16 +19,17 @@ public class main {
      */
     public static void main(String[] args) {
         Grafo grafo = Grafo.criaGrafo();
-        int[][] geraMatriz = Grafo.geraMatriz(grafo);
-        imprimeMatriz(geraMatriz);
-        System.out.println(Grafo.checaConexo(grafo));
-        if (Grafo.checaCilco(grafo)) {
-            System.out.println("tem cilco");
-            Grafo retornaCilco = Grafo.retornaCilco(grafo);
-            imprimeMatriz(Grafo.geraMatriz(retornaCilco));
-        } else {
-            System.out.println("nao tem cilco");
-        }
+        Grafo.desenhaGrafo(grafo);
+//        int[][] geraMatriz = Grafo.geraMatriz(grafo);
+//        imprimeMatriz(geraMatriz);
+//        System.out.println(Grafo.checaConexo(grafo));
+//        if (Grafo.checaCilco(grafo)) {
+//            System.out.println("tem cilco");
+//            Grafo retornaCilco = Grafo.retornaCilco(grafo);
+//            imprimeMatriz(Grafo.geraMatriz(retornaCilco));
+//        } else {
+//            System.out.println("nao tem cilco");
+//        }
     }
 
     public static void imprimeMatriz(int[][] matriz) {

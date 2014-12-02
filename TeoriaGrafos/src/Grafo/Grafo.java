@@ -1,9 +1,20 @@
 package Grafo;
 
-import com.sun.org.apache.xerces.internal.dom.PSVIAttrNSImpl;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import javax.swing.JApplet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import sun.print.PSPrinterJob;
+import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
+import org.jgrapht.ListenableGraph;
+import org.jgrapht.ext.JGraphModelAdapter;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.ListenableUndirectedGraph;
 
 /**
  *
@@ -12,10 +23,76 @@ import sun.print.PSPrinterJob;
 public class Grafo {
 
     private ArrayList<Vertice> vertices;
-    private int[][] matAdj;
+    private int[][] matAdj = null;
 
     public Grafo() {
         this.vertices = new ArrayList();
+    }
+
+    public static void desenhaGrafo(final Grafo gr) {
+
+        JGraphModelAdapter<String, DefaultEdge> jgAdapter;
+
+        ListenableGraph<String, DefaultEdge> g
+                = new ListenableUndirectedGraph<String, DefaultEdge>(
+                        DefaultEdge.class);
+
+        jgAdapter = new JGraphModelAdapter<String, DefaultEdge>(g);
+
+        JGraph jgraph = new JGraph(jgAdapter);
+
+        jgraph.setPreferredSize(new Dimension(500, 500));
+
+        if (gr.matAdj == null) {
+            int[][] matriz = Grafo.geraMatriz(gr);
+            for (int i = 0; i < matriz.length; i++) {
+                g.addVertex(Integer.toString(i + 1));
+                Grafo.positionVertexAt(Integer.toString(i + 1), (int) (Math.random() * 500), (int) (Math.random() * 500), jgAdapter);
+            }
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = i + 1; j < matriz.length; j++) {
+                    if (matriz[i][j] != 0) {
+                        g.addEdge(Integer.toString(i + 1), Integer.toString(j + 1));
+                    }
+                }
+            }
+
+        }
+
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(jgraph);
+        frame.setTitle("JGraphT Adapter to JGraph Demo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
+    }
+
+    private static void positionVertexAt(Object vertex, int x, int y, JGraphModelAdapter<String, DefaultEdge> jgAdapter) {
+        DefaultGraphCell cell = jgAdapter.getVertexCell(vertex);
+        AttributeMap attr = cell.getAttributes();
+
+//        GraphConstants.setMoveable(attr, false);
+        GraphConstants.setDisconnectable(attr, false);
+        GraphConstants.setEditable(attr, false);
+        GraphConstants.setSizeable(attr, false);
+        
+        GraphConstants.setBackground(attr, Color.GRAY);
+        Rectangle2D bounds = GraphConstants.getBounds(attr);
+
+        Rectangle2D newBounds
+                = new Rectangle2D.Double(
+                        x,
+                        y,
+                        bounds.getHeight(),
+                        bounds.getHeight());
+
+        GraphConstants.setBounds(attr, newBounds);
+
+        // TODO: Clean up generics once JGraph goes generic
+        AttributeMap cellAttr = new AttributeMap();
+        cellAttr.put(cell, attr);
+        jgAdapter.edit(cellAttr, null, null, null);
     }
 
     public static Grafo criaGrafo() {
