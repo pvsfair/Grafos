@@ -14,6 +14,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.ListenableDirectedGraph;
 import org.jgrapht.graph.ListenableUndirectedGraph;
 
 /**
@@ -25,9 +26,16 @@ public class Grafo {
     private ArrayList<Vertice> vertices;
     private int[][] matAdj = null;
     private Color[] vetorCores = {Color.BLUE, Color.GREEN, Color.ORANGE, Color.RED, Color.YELLOW, Color.PINK};
+    private boolean direcionado = false;
 
     public Grafo() {
         this.vertices = new ArrayList();
+    }
+
+    private Grafo(Grafo gr) {
+        for (Vertice vert : gr.getVertices()) {
+            this.vertices.add(new Vertice(vert));
+        }
     }
 
     public static void colorirGrafo(Grafo gr) {
@@ -37,43 +45,54 @@ public class Grafo {
                 if (aresta.getvDestino().getCor() == gr.vetorCores[i]) {
                     i++;
                 }
-//                if(aresta.getvOrigem().getCor() == aresta.getvDestino().getCor()){
-//                    
-//                }
             }
             vert.setCor(gr.vetorCores[i]);
         }
     }
 
+    public static void ordTop(Grafo gr) {
+        Grafo grafo = new Grafo(gr);
+        
+        ArrayList<Vertice> pilha = new ArrayList<>();
+        Vertice vert = null;        
+        while((vert = DFS(grafo)) != null){
+            
+        }
+        
+    }
+    
+//    private static Vertice DFS(Grafo gr){
+//        
+//    }
+
+    private static Vertice DFSinterno(Vertice vAtual, Aresta aPassada) {
+//        System.out.println("vO = " + vOrigem.getRotulo() + " | vA = " + vAtual.getRotulo() + " | Aresta = " + aPassada.toString());
+        for (Aresta aresta : vAtual.getArestas()) {
+            if (!aresta.getvDestino().isMarcado()) {
+                
+                return DFSinterno(aresta.getvDestino(), aresta);
+            }
+            
+        }
+        return null;
+    }
     public static void desenhaGrafo(final Grafo gr) {
 
         JGraphModelAdapter<String, DefaultEdge> jgAdapter;
 
-        ListenableGraph<String, DefaultEdge> g
-                = new ListenableUndirectedGraph<String, DefaultEdge>(
-                        DefaultEdge.class);
+        ListenableGraph<String, DefaultEdge> g;
+        if (gr.direcionado) {
+            g = new ListenableDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+        } else {
+            g = new ListenableUndirectedGraph<String, DefaultEdge>(
+                    DefaultEdge.class);
+        }
 
         jgAdapter = new JGraphModelAdapter<String, DefaultEdge>(g);
 
         JGraph jgraph = new JGraph(jgAdapter);
 
         jgraph.setPreferredSize(new Dimension(500, 500));
-        /*
-         if (gr.matAdj == null) {
-         int[][] matriz = Grafo.geraMatriz(gr);
-         for (int i = 0; i < matriz.length; i++) {
-         g.addVertex(Integer.toString(i + 1));
-         Grafo.positionVertexAt(Integer.toString(i + 1), (int) (Math.random() * 500), (int) (Math.random() * 500), jgAdapter);
-         }
-         for (int i = 0; i < matriz.length; i++) {
-         for (int j = i + 1; j < matriz.length; j++) {
-         if (matriz[i][j] != 0) {
-         g.addEdge(Integer.toString(i + 1), Integer.toString(j + 1));
-         }
-         }
-         }
-
-         }*/
 
         for (Vertice vert : gr.getVertices()) {
             g.addVertex(vert.getRotulo());
@@ -138,6 +157,7 @@ public class Grafo {
         System.out.println();
         String resposta = JOptionPane.showInputDialog(null, "Esse grafo é direcionado?<s/n>");
         if (resposta.equalsIgnoreCase("s")) {  //se for direcionado
+            grafo.direcionado = true;
             for (int i = 0; i < nVert; i++) {
                 for (int j = 0; j < nVert; j++) {
                     if (i == j) {
@@ -151,6 +171,7 @@ public class Grafo {
                 }
             }
         } else {  //se não for direcionado
+            grafo.direcionado = false;
             for (int i = 0; i < nVert; i++) {
                 for (int j = 0; j < nVert; j++) {
                     if (i == j) {

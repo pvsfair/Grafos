@@ -12,7 +12,7 @@ public class Vertice {
 
     private String rotulo;
     private ArrayList<Aresta> arestas;
-    private boolean marcado=false;
+    private boolean marcado = false;
     private Color cor;
 
     public Vertice(String rotulo, ArrayList<Aresta> arestas) {
@@ -25,6 +25,13 @@ public class Vertice {
         this.rotulo = rotulo;
         this.arestas = new ArrayList<Aresta>();
         cor = Color.LIGHT_GRAY;
+    }
+    public Vertice (Vertice vert){
+        this.rotulo = vert.rotulo;
+        this.cor = vert.cor;
+        for (Aresta arest : vert.arestas) {
+            this.arestas.add(arest);
+        }
     }
     
     public void addAresta(Aresta nova){
@@ -66,6 +73,14 @@ public class Vertice {
 
     public void setRotulo(String rotulo) {
         this.rotulo = rotulo;
+    }
+
+    public boolean isMarcado() {
+        return marcado;
+    }
+
+    public void setMarcado(boolean marcado) {
+        this.marcado = marcado;
     }
     
     public Color getCor() {
