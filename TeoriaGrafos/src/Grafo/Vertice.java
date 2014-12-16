@@ -1,5 +1,6 @@
 package Grafo;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -12,15 +13,18 @@ public class Vertice {
     private String rotulo;
     private ArrayList<Aresta> arestas;
     private boolean marcado=false;
+    private Color cor;
 
     public Vertice(String rotulo, ArrayList<Aresta> arestas) {
         this.rotulo = rotulo;
         this.arestas = arestas;
+        cor = Color.LIGHT_GRAY;
     }
 
     public Vertice(String rotulo) {
         this.rotulo = rotulo;
         this.arestas = new ArrayList<Aresta>();
+        cor = Color.LIGHT_GRAY;
     }
     
     public void addAresta(Aresta nova){
@@ -63,8 +67,12 @@ public class Vertice {
     public void setRotulo(String rotulo) {
         this.rotulo = rotulo;
     }
+    
+    public Color getCor() {
+        return cor;
+    }
 
-    public void addAdj(Vertice adj) {
-
+    public void setCor(Color cor) {
+        this.cor = cor;
     }
 }

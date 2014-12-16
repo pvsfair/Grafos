@@ -19,6 +19,7 @@ public class main {
      */
     public static void main(String[] args) {
         Grafo grafo = Grafo.criaGrafo();
+        Grafo.colorirGrafo(grafo);
         Grafo.desenhaGrafo(grafo);
 //        int[][] geraMatriz = Grafo.geraMatriz(grafo);
 //        imprimeMatriz(geraMatriz);

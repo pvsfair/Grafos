@@ -24,9 +24,25 @@ public class Grafo {
 
     private ArrayList<Vertice> vertices;
     private int[][] matAdj = null;
+    private Color[] vetorCores = {Color.BLUE, Color.GREEN, Color.ORANGE, Color.RED, Color.YELLOW, Color.PINK};
 
     public Grafo() {
         this.vertices = new ArrayList();
+    }
+
+    public static void colorirGrafo(Grafo gr) {
+        for (Vertice vert : gr.getVertices()) {
+            int i = 0;
+            for (Aresta aresta : vert.getArestas()) {
+                if (aresta.getvDestino().getCor() == gr.vetorCores[i]) {
+                    i++;
+                }
+//                if(aresta.getvOrigem().getCor() == aresta.getvDestino().getCor()){
+//                    
+//                }
+            }
+            vert.setCor(gr.vetorCores[i]);
+        }
     }
 
     public static void desenhaGrafo(final Grafo gr) {
@@ -42,21 +58,32 @@ public class Grafo {
         JGraph jgraph = new JGraph(jgAdapter);
 
         jgraph.setPreferredSize(new Dimension(500, 500));
+        /*
+         if (gr.matAdj == null) {
+         int[][] matriz = Grafo.geraMatriz(gr);
+         for (int i = 0; i < matriz.length; i++) {
+         g.addVertex(Integer.toString(i + 1));
+         Grafo.positionVertexAt(Integer.toString(i + 1), (int) (Math.random() * 500), (int) (Math.random() * 500), jgAdapter);
+         }
+         for (int i = 0; i < matriz.length; i++) {
+         for (int j = i + 1; j < matriz.length; j++) {
+         if (matriz[i][j] != 0) {
+         g.addEdge(Integer.toString(i + 1), Integer.toString(j + 1));
+         }
+         }
+         }
 
-        if (gr.matAdj == null) {
-            int[][] matriz = Grafo.geraMatriz(gr);
-            for (int i = 0; i < matriz.length; i++) {
-                g.addVertex(Integer.toString(i + 1));
-                Grafo.positionVertexAt(Integer.toString(i + 1), (int) (Math.random() * 500), (int) (Math.random() * 500), jgAdapter);
-            }
-            for (int i = 0; i < matriz.length; i++) {
-                for (int j = i + 1; j < matriz.length; j++) {
-                    if (matriz[i][j] != 0) {
-                        g.addEdge(Integer.toString(i + 1), Integer.toString(j + 1));
-                    }
-                }
-            }
+         }*/
 
+        for (Vertice vert : gr.getVertices()) {
+            g.addVertex(vert.getRotulo());
+            Grafo.positionVertexAt(vert.getRotulo(), (int) (Math.random() * 480),
+                    (int) (Math.random() * 480), vert.getCor(), jgAdapter);
+        }
+        for (Vertice vert : gr.getVertices()) {
+            for (Aresta ar : vert.getArestas()) {
+                g.addEdge(ar.getvOrigem().getRotulo(), ar.getvDestino().getRotulo());
+            }
         }
 
         JFrame frame = new JFrame();
@@ -68,7 +95,7 @@ public class Grafo {
 
     }
 
-    private static void positionVertexAt(Object vertex, int x, int y, JGraphModelAdapter<String, DefaultEdge> jgAdapter) {
+    private static void positionVertexAt(Object vertex, int x, int y, Color cor, JGraphModelAdapter<String, DefaultEdge> jgAdapter) {
         DefaultGraphCell cell = jgAdapter.getVertexCell(vertex);
         AttributeMap attr = cell.getAttributes();
 
@@ -76,8 +103,8 @@ public class Grafo {
         GraphConstants.setDisconnectable(attr, false);
         GraphConstants.setEditable(attr, false);
         GraphConstants.setSizeable(attr, false);
-        
-        GraphConstants.setBackground(attr, Color.GRAY);
+
+        GraphConstants.setBackground(attr, cor);
         Rectangle2D bounds = GraphConstants.getBounds(attr);
 
         Rectangle2D newBounds
@@ -117,7 +144,6 @@ public class Grafo {
                     } else {
                         int retorno = Integer.parseInt(JOptionPane.showInputDialog(null, "Peso entre os vertices " + (i + 1) + "-" + (j + 1) + ":"));
                         if (retorno != 0) {
-                            grafo.vertices.get(i).addAdj(grafo.vertices.get(j));  //Add vertice adjacente
                             Aresta nova = new Aresta(grafo.vertices.get(i), grafo.vertices.get(j), retorno); //criando aresta
                             grafo.vertices.get(i).getArestas().add(nova);  //Adicionando aresta nova
                         }
@@ -131,10 +157,8 @@ public class Grafo {
                     } else if (i < j) {
                         int retorno = Integer.parseInt(JOptionPane.showInputDialog(null, "Peso entre os vertices " + (i + 1) + "-" + (j + 1) + ":"));
                         if (retorno != 0) {
-                            grafo.vertices.get(i).addAdj(grafo.vertices.get(j));  //Add vertice adjacente
                             Aresta nova = new Aresta(grafo.vertices.get(i), grafo.vertices.get(j), retorno); //criando aresta
                             grafo.vertices.get(i).getArestas().add(nova);  //Adicionando aresta nova
-                            grafo.vertices.get(j).addAdj(grafo.vertices.get(i));  //Add vertice adjacente
                             nova = new Aresta(grafo.vertices.get(j), grafo.vertices.get(i), retorno);
                             grafo.vertices.get(j).getArestas().add(nova);  //Adicionando aresta nova
                         }
