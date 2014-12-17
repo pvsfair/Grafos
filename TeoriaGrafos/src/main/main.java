@@ -2,6 +2,7 @@ package main;
 
 import Grafo.Grafo;
 import Grafo.Vertice;
+import java.util.ArrayList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +21,10 @@ public class main {
     public static void main(String[] args) {
         Grafo grafo = Grafo.criaGrafo();
         Grafo.colorirGrafo(grafo);
+        ArrayList<Vertice> ordTop = Grafo.ordTop(grafo);
+        for (Vertice ordTop1 : ordTop) {
+            System.out.println(ordTop1.getRotulo() + ", ");
+        }
         Grafo.desenhaGrafo(grafo);
 //        int[][] geraMatriz = Grafo.geraMatriz(grafo);
 //        imprimeMatriz(geraMatriz);

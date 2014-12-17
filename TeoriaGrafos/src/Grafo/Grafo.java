@@ -50,32 +50,37 @@ public class Grafo {
         }
     }
 
-    public static void ordTop(Grafo gr) {
-        Grafo grafo = new Grafo(gr);
-        
-        ArrayList<Vertice> pilha = new ArrayList<>();
-        Vertice vert = null;        
-        while((vert = DFS(grafo)) != null){
-            
-        }
-        
-    }
-    
-//    private static Vertice DFS(Grafo gr){
-//        
-//    }
+    public static ArrayList<Vertice> ordTop(Grafo gr) {
+        //Grafo grafo = new Grafo(gr);
 
-    private static Vertice DFSinterno(Vertice vAtual, Aresta aPassada) {
-//        System.out.println("vO = " + vOrigem.getRotulo() + " | vA = " + vAtual.getRotulo() + " | Aresta = " + aPassada.toString());
-        for (Aresta aresta : vAtual.getArestas()) {
-            if (!aresta.getvDestino().isMarcado()) {
-                
-                return DFSinterno(aresta.getvDestino(), aresta);
-            }
-            
+        ArrayList<Vertice> order = new ArrayList<Vertice>();
+        if (Grafo.checaCilco(gr)) {
+            System.out.println("Nao e possivel obter uma ordenacao topologica, pois este grafo possui ciclo(s)");
         }
-        return null;
+        for (Vertice v : gr.vertices) {
+            if (!v.isMarcado()) {
+                DFS(v, order);
+            }
+        }
+        for (Vertice v : gr.vertices) {
+            v.setMarcado(false);
+        }
+        return order;
+
     }
+
+    private static void DFS(Vertice v, ArrayList<Vertice> l) {
+        v.setMarcado(true);
+
+        for (Aresta aresta : v.getArestas()) {
+            if (!aresta.getvDestino().isMarcado()) {
+                DFS(aresta.getvDestino(), l);
+            }
+        }
+
+        l.add(0, v);
+    }
+
     public static void desenhaGrafo(final Grafo gr) {
 
         JGraphModelAdapter<String, DefaultEdge> jgAdapter;
@@ -240,7 +245,7 @@ public class Grafo {
     }
 
     private static boolean visitarVizinho(Vertice vOrigem, Vertice vAtual, Aresta aPassada) {
-        System.out.println("vO = " + vOrigem.getRotulo() + " | vA = " + vAtual.getRotulo() + " | Aresta = " + aPassada.toString());
+//        System.out.println("vO = " + vOrigem.getRotulo() + " | vA = " + vAtual.getRotulo() + " | Aresta = " + aPassada.toString());
         if (vOrigem.equals(vAtual)) {
             return true;
         }

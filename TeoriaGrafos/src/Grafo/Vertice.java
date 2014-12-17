@@ -26,6 +26,7 @@ public class Vertice {
         this.arestas = new ArrayList<Aresta>();
         cor = Color.LIGHT_GRAY;
     }
+    
     public Vertice (Vertice vert){
         this.rotulo = vert.rotulo;
         this.cor = vert.cor;
